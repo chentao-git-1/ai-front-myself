@@ -30,9 +30,24 @@ async function sendMessage() {
    
 
     const newMessage = {
+        id: crypto.randomUUID(),
         role: "user",
         content: input
     };
+
+    const assistantId = crypto.randomUUID();
+
+    const assistantMessage = {
+        id: assistantId,
+        role: "assistant",
+        content: ""
+    };        
+
+    setMessages(prev => [
+        ...prev,
+        newMessage,
+        assistantMessage
+    ]);               
 
     setMessages(prev => [...prev, newMessage]);
 
@@ -86,8 +101,30 @@ async function sendMessage() {
         const events = buffe.split(/\r?\n\r?\n/)
         buffe = events.pop() ?? "";
         for (const event of events) {
+          const lines = event.split(/\r?\n/);
 
-            console.log(event);
+        const text = lines
+            .filter(line => line.startsWith("data:"))
+            .map(line => line.slice(5).replace(/^ /, ""))
+            .join("\n");  
+
+        console.log(text);
+
+        // TODO：更新指定的 AI 消息
+        setMessages(prev =>
+            prev.map(msg => {
+
+                if (msg.id === assistantId) {
+
+                    return {
+                        ...msg,
+                        content: msg.content + text
+                    };
+                }
+
+                return msg;
+            })
+        );
 
         }
 
