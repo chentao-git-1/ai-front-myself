@@ -70,7 +70,7 @@ async function sendMessage() {
             },
             body: JSON.stringify({
                 message: newMessage.content,
-                conversationId: newMessage.id
+                conversationId: conversationId
             })
         }
     );
@@ -142,12 +142,14 @@ async function sendMessage() {
 }
 
 function createMessage(){
-  setInput("");
+    if (loading) {
+        return;
+    }
 
-  setConversationId(crypto.randomUUID());
-
-  setMessages();
-
+    setConversationId(crypto.randomUUID());
+    setMessages([]);
+    setInput("");
+    seterror("");
 }
 
   return (
@@ -155,7 +157,7 @@ function createMessage(){
       <section >  
 
         <div>
-          <button onClick={createMessage} >新建对话</button>
+          <button onClick={createMessage}disabled={loading}>{loading? "请求中":"新建对话"}</button>
           <input
           value={input}
           onChange={(e) => setInput(e.target.value)}
