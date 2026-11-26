@@ -45,7 +45,7 @@ async function sendMessage() {
         // 请求参数：message
         // 提示：使用 newMessage.content
           const response = await fetch(
-        "http://localhost:8080/api/chat",
+        "http://localhost:8080/api/chat/stream",
         {
             method: "POST",
             headers: {
@@ -59,9 +59,37 @@ async function sendMessage() {
     if (!response.ok) {
     throw new Error("HTTP错误：" + response.status);
 }
-        const data = await response.json();
-        // TODO 3：将后端回复添加到 messages 数组
-        setMessages(prev => [...prev, data]);
+    // TODO 1：获取 response.body 的读取器
+    const reader = response.body.getReader();
+    
+
+    // TODO 2：创建 UTF-8 TextDecoder
+    const decoder = new TextDecoder("utf-8");
+
+    
+
+    while (true) {
+
+        // TODO 3：读取数据，获取 done 和 value
+        const {done,value}=await reader.read();
+
+        // TODO 4：如果 done 为 true，结束循环
+        if(done==true)
+          break;
+
+
+        // TODO 5：将 value 解码为字符串
+
+        let buffe="";
+
+        buffe+= decoder.decode(value,{
+          stream:true
+        })
+        const events = buffer.split(/\r?\n\r?\n/)
+
+        // TODO 6：在控制台打印解码后的内容
+        console.log(buffe);
+}
 
     } catch (e) {
       console.log(e);
