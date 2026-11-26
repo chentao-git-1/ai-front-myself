@@ -59,8 +59,7 @@ async function sendMessage() {
     if (!response.ok) {
     throw new Error("HTTP错误：" + response.status);
 }
-        // TODO 2：解析后端返回的 JSON
-        const data=await response.json();
+        const data = await response.json();
         // TODO 3：将后端回复添加到 messages 数组
         setMessages(prev => [...prev, data]);
 
