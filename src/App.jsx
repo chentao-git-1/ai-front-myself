@@ -15,6 +15,9 @@ function App() {
 
   const [error,seterror]=useState("");
 
+  const [conversationId, setConversationId] =
+    useState(() => crypto.randomUUID());
+
 
 async function sendMessage() {
 
@@ -27,7 +30,6 @@ async function sendMessage() {
     seterror("");
     setLoading(true);
 
-   
 
     const newMessage = {
         id: crypto.randomUUID(),
@@ -66,7 +68,8 @@ async function sendMessage() {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
-                message: newMessage.content
+                message: newMessage.content,
+                conversationId: conversationId
             })
         }
     );
@@ -137,24 +140,21 @@ async function sendMessage() {
     }
 }
 
+function createMessage(){
+  setInput("");
+
+  setConversationId(crypto.randomUUID());
+
+  setMessages();
+
+}
+
   return (
     <>
       <section >  
-        {/* <div >
-          <button onClick={testbackend}>
-            测试后端连接
-          </button>
-          <p>
-            连接状态：{backendData?backendData.status : ("尚未连接")}
-
-          </p>
-
-          <p>
-            后端名称：{backendData?backendData.service : ("尚未连接")}
-          </p>
-        </div> */}
 
         <div>
+          <button onClick={createMessage} >新建对话</button>
           <input
           value={input}
           onChange={(e) => setInput(e.target.value)}
