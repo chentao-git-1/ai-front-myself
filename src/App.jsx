@@ -45,6 +45,8 @@ async function sendMessage() {
         content: ""
     };        
 
+    
+
     setMessages(prev => [
         ...prev,
         newMessage,
@@ -54,7 +56,6 @@ async function sendMessage() {
 
     setInput("");
 
-    
 
         // TODO 1：使用 fetch 发起 POST 请求
         // 地址：http://localhost:8080/api/chat
@@ -69,7 +70,7 @@ async function sendMessage() {
             },
             body: JSON.stringify({
                 message: newMessage.content,
-                conversationId: conversationId
+                conversationId: newMessage.id
             })
         }
     );
