@@ -49,7 +49,6 @@ async function sendMessage() {
         assistantMessage
     ]);               
 
-    setMessages(prev => [...prev, newMessage]);
 
     setInput("");
 
@@ -89,7 +88,7 @@ async function sendMessage() {
         const {done,value}=await reader.read();
 
         // TODO 4：如果 done 为 true，结束循环
-        if(done==true)
+        if(done)
           break;
 
         // TODO 5：将 value 解码为字符串
@@ -161,8 +160,8 @@ async function sendMessage() {
           onChange={(e) => setInput(e.target.value)}
           />
           <button onClick={sendMessage} disabled={loading}>{loading? "请求中":"发送"}</button>
-          {messages.map((message, index) => (
-            <p key={index}>{message.role}：{message.content}</p>
+          {messages.map((message) => (
+            <p key={message.id}>{message.role}：{message.content}</p>
             ))}
             {error}
         </div>
