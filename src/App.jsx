@@ -67,7 +67,7 @@ async function sendMessage() {
     const decoder = new TextDecoder("utf-8");
 
     
-
+    let buffe="";
     while (true) {
 
         // TODO 3：读取数据，获取 done 和 value
@@ -77,18 +77,20 @@ async function sendMessage() {
         if(done==true)
           break;
 
-
         // TODO 5：将 value 解码为字符串
-
-        let buffe="";
 
         buffe+= decoder.decode(value,{
           stream:true
         })
-        const events = buffer.split(/\r?\n\r?\n/)
 
-        // TODO 6：在控制台打印解码后的内容
-        console.log(buffe);
+        const events = buffe.split(/\r?\n\r?\n/)
+        buffe = events.pop() ?? "";
+        for (const event of events) {
+
+            console.log(event);
+
+        }
+
 }
 
     } catch (e) {
