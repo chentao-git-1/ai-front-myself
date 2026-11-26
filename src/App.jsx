@@ -20,13 +20,14 @@ async function sendMessage() {
 
 
   try {
+     if (!input.trim()) {
+        return;
+    }
 
     seterror("");
     setLoading(true);
 
-    if (!input.trim()) {
-        return;
-    }
+   
 
     const newMessage = {
         role: "user",
